@@ -1,4 +1,5 @@
 const pool = require('../config/db.config');
+const bcrypt = require('bcryptjs');
 const { userAccountsModel, createUserAccountModel } = require('../models/userAccounts.model');
 
 const getUserAccounts = async (req, res) => {
@@ -14,8 +15,9 @@ const getUserAccounts = async (req, res) => {
 
 const createUserAccount = async (req, res) => {
   const { fk_user_role, pseudo, email, password } = req.body;
+  const hash = await bcrypt.hash(password, 10);
   try {
-    await pool.promise().query(createUserAccountModel, [fk_user_role, pseudo, email, password]);
+    await pool.promise().query(createUserAccountModel, [fk_user_role, pseudo, email, hash]);
     res.status(200).json({ accountCreated: true, message: 'success, accout created' });  
 
   } catch(error) {
