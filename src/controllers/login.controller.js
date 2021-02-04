@@ -7,11 +7,11 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const [rows] = await pool.promise().query(verifyEmailExist, [email]);
-    const { id, pseudo } = rows[0];
+    const { id, pseudo, user_picture } = rows[0];
 
     const match = await bcrypt.compare(password, rows[0].password);
     if(match) {
-      res.status(200).json({ id: id, pseudo: pseudo, email: email, connected: true })
+      res.status(200).json({ id: id, pseudo: pseudo, email: email, connected: true, picture: user_picture })
     } else {
       res.status(403).json('wrong password');
     }
