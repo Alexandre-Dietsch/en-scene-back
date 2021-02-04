@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const pool = require('../config/db.config');
+const registration = require('./registration');
 
+router.use('/registration', registration);
 
 module.exports = router;
